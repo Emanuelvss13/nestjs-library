@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../global/models/base.entity';
+import { Author } from './author.entity';
 import { Gender } from './gender.entity';
 
 @Entity()
@@ -8,7 +9,7 @@ export class Book extends BaseEntity {
   title: string;
 
   @Column()
-  author: string;
+  author: Author;
 
   @Column()
   publishedDate: Date;
