@@ -1,11 +1,9 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
+import { BaseEntity } from '../../global/models/base.entity';
 import { Book } from './book.entity';
 
 @Entity()
-export class Gender {
-  @Column()
-  id: string;
-
+export class Gender extends BaseEntity {
   @Column()
   description: string;
 
