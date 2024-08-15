@@ -1,12 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { REPOSITORIES } from '../global/repositories/repositories.enum';
+import { BookRepository } from '../infra/typeorm/repositories/typeorm-book.repository';
 import { BookController } from './book.controller';
 import { BookService } from './book.service';
+import { Author } from './models/author.entity';
 import { Book } from './models/book.entity';
+import { Gender } from './models/gender.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book])],
+  imports: [TypeOrmModule.forFeature([Book, Author, Gender])],
   controllers: [BookController],
-  providers: [BookService],
+  providers: [
+    BookService,
+    {
+      provide: REPOSITORIES.BOOK,
+      useClass: BookRepository,
+    },
+  ],
 })
 export class BookModule {}

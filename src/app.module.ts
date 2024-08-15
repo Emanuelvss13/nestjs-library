@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookModule } from './book/book.module';
+import { Author } from './book/models/author.entity';
+import { Book } from './book/models/book.entity';
+import { Gender } from './book/models/gender.entity';
 
 @Module({
   imports: [
@@ -11,7 +14,7 @@ import { BookModule } from './book/book.module';
       username: 'postgres',
       password: 'postgres',
       database: 'library',
-      entities: [],
+      entities: [Book, Author, Gender],
       synchronize: true,
     }),
     BookModule,

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../global/models/base.entity';
 import { Book } from './book.entity';
 
@@ -7,7 +7,6 @@ export class Author extends BaseEntity {
   @Column()
   name: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToOne((type) => Book, (Book) => Book.author)
+  @OneToMany(() => Book, (Book) => Book.author)
   books: Book[];
 }
