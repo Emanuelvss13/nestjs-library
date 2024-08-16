@@ -16,8 +16,6 @@ export class BookService {
   async reservation(data: ReservationDto) {
     const book = await this.findById(data.bookId);
 
-    console.log(book);
-
     return await this.bookRepository.reservation(data, book);
   }
 
