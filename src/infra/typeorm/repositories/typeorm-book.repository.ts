@@ -3,22 +3,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from '../../../book/dto/create-book.dto';
 import { FindAllDto } from '../../../book/dto/find-all-books.dto';
+import { ReservationDto } from '../../../book/dto/reservation.dot';
 import { UpdateBookDto } from '../../../book/dto/update-book.dto';
 import { Book } from '../../../book/models/book.entity';
 import { IBookRepository } from '../../../book/models/book.repository';
+import { Reservation } from '../../../book/models/reservation.entity';
 
 @Injectable()
 export class BookRepository implements IBookRepository {
   constructor(
     @InjectRepository(Book)
-    private typeorm: Repository<Book>,
+    private typeormBook: Repository<Book>,
+    @InjectRepository(Reservation)
+    private typeormReservation: Repository<Reservation>,
   ) {}
+
+  async reservation(data: ReservationDto, book: Book): Promise<Reservation> {
+    const reservation = await this.typeormReservation.save({ ...data });
+
+    await this.typeormBook.decrement(
+      {
+        id: data.bookId,
+      },
+      'quantity',
+      1,
+    );
+
+    book.reservations.push(reservation);
+
+    await this.typeormBook.save(book);
+
+    return reservation;
+  }
 
   async updateById(
     id: string,
     { genderId, authorId, ...data }: UpdateBookDto,
   ): Promise<Book> {
-    await this.typeorm.update(
+    await this.typeormBook.update(
       {
         id,
       },
@@ -37,7 +59,7 @@ export class BookRepository implements IBookRepository {
       },
     );
 
-    return await this.typeorm.findOne({
+    return await this.typeormBook.findOne({
       where: {
         id,
       },
@@ -49,7 +71,7 @@ export class BookRepository implements IBookRepository {
   }
 
   async create({ authorId, genderId, ...data }: CreateBookDto): Promise<Book> {
-    const book = await this.typeorm.save({
+    const book = await this.typeormBook.save({
       ...data,
       author: {
         id: authorId,
@@ -67,7 +89,7 @@ export class BookRepository implements IBookRepository {
     genderId,
     publishedYear,
   }: FindAllDto): Promise<Book[]> {
-    const query = this.typeorm
+    const query = this.typeormBook
       .createQueryBuilder('book')
       .leftJoinAndSelect('book.author', 'author')
       .leftJoinAndSelect('book.gender', 'gender');
@@ -90,13 +112,14 @@ export class BookRepository implements IBookRepository {
   }
 
   async findById(id: string): Promise<Book> {
-    const book = await this.typeorm.findOne({
+    const book = await this.typeormBook.findOne({
       where: {
         id,
       },
       relations: {
         author: true,
         gender: true,
+        reservations: true,
       },
     });
 
@@ -104,6 +127,6 @@ export class BookRepository implements IBookRepository {
   }
 
   async deleteById(id: string): Promise<void> {
-    await this.typeorm.delete({ id });
+    await this.typeormBook.delete({ id });
   }
 }

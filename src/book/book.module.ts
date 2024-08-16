@@ -7,9 +7,10 @@ import { BookService } from './book.service';
 import { Author } from './models/author.entity';
 import { Book } from './models/book.entity';
 import { Gender } from './models/gender.entity';
+import { Reservation } from './models/reservation.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Book, Author, Gender])],
+  imports: [TypeOrmModule.forFeature([Book, Author, Gender, Reservation])],
   controllers: [BookController],
   providers: [
     BookService,

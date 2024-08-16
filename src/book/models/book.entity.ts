@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../global/models/base.entity';
 import { Author } from './author.entity';
 import { Gender } from './gender.entity';
+import { Reservation } from './reservation.entity';
 
 @Entity()
 export class Book extends BaseEntity {
@@ -19,4 +20,8 @@ export class Book extends BaseEntity {
 
   @Column()
   quantity: number;
+
+  @ManyToMany(() => Reservation)
+  @JoinTable()
+  reservations: Reservation[];
 }

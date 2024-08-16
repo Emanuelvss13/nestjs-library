@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { REPOSITORIES } from '../global/repositories/repositories.enum';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindAllDto } from './dto/find-all-books.dto';
+import { ReservationDto } from './dto/reservation.dot';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { IBookRepository } from './models/book.repository';
 
@@ -12,10 +13,16 @@ export class BookService {
     readonly bookRepository: IBookRepository,
   ) {}
 
-  async create(data: CreateBookDto) {
-    const book = await this.bookRepository.create(data);
+  async reservation(data: ReservationDto) {
+    const book = await this.findById(data.bookId);
 
-    return book;
+    console.log(book);
+
+    return await this.bookRepository.reservation(data, book);
+  }
+
+  async create(data: CreateBookDto) {
+    return await this.bookRepository.create(data);
   }
 
   async findAll(query: FindAllDto) {

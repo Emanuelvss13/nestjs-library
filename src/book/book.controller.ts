@@ -11,6 +11,7 @@ import {
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindAllDto } from './dto/find-all-books.dto';
+import { ReservationDto } from './dto/reservation.dot';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('book')
@@ -20,6 +21,11 @@ export class BookController {
   @Post()
   create(@Body() createBookDto: CreateBookDto) {
     return this.bookService.create(createBookDto);
+  }
+
+  @Post('reservation')
+  createReservation(@Body() data: ReservationDto) {
+    return this.bookService.reservation(data);
   }
 
   @Get()
