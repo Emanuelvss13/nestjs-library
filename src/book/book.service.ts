@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { REPOSITORIES } from '../global/repositories/repositories.enum';
 import { CreateBookDto } from './dto/create-book.dto';
+import { FindAllDto } from './dto/find-all-books.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { IBookRepository } from './models/book.repository';
 
@@ -17,8 +18,8 @@ export class BookService {
     return book;
   }
 
-  async findAll() {
-    return await this.bookRepository.findAll();
+  async findAll(query: FindAllDto) {
+    return await this.bookRepository.findAll(query);
   }
 
   async findById(id: string) {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from '../../../book/dto/create-book.dto';
+import { FindAllDto } from '../../../book/dto/find-all-books.dto';
 import { UpdateBookDto } from '../../../book/dto/update-book.dto';
 import { Book } from '../../../book/models/book.entity';
 import { IBookRepository } from '../../../book/models/book.repository';
@@ -61,15 +62,31 @@ export class BookRepository implements IBookRepository {
     return book;
   }
 
-  async findAll(): Promise<Book[]> {
-    const books = await this.typeorm.find({
-      relations: {
-        author: true,
-        gender: true,
-      },
-    });
+  async findAll({
+    authorId,
+    genderId,
+    publishedYear,
+  }: FindAllDto): Promise<Book[]> {
+    const query = this.typeorm
+      .createQueryBuilder('book')
+      .leftJoinAndSelect('book.author', 'author')
+      .leftJoinAndSelect('book.gender', 'gender');
 
-    return books;
+    if (genderId) {
+      query.andWhere('gender.id = :genderId', { genderId });
+    }
+
+    if (authorId) {
+      query.andWhere('author.id = :authorId', { authorId });
+    }
+
+    if (publishedYear) {
+      query.andWhere('EXTRACT(YEAR FROM book.publishedDate) = :publishedYear', {
+        publishedYear,
+      });
+    }
+
+    return await query.getMany();
   }
 
   async findById(id: string): Promise<Book> {
