@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { REPOSITORIES } from '../global/repositories/repositories.enum';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -17,19 +17,27 @@ export class BookService {
     return book;
   }
 
-  findAll() {
-    return `This action returns all book`;
+  async findAll() {
+    return await this.bookRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findById(id: string) {
+    const book = await this.bookRepository.findById(id);
+
+    if (!book) throw new BadRequestException('Livro não encontrado');
+
+    return book;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: string, updateBookDto: UpdateBookDto) {
+    await this.findById(id);
+
+    return await this.bookRepository.updateById(id, updateBookDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async delete(id: string) {
+    await this.findById(id);
+
+    return await this.bookRepository.deleteById(id);
   }
 }

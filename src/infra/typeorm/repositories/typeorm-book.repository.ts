@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBookDto } from '../../../book/dto/create-book.dto';
+import { UpdateBookDto } from '../../../book/dto/update-book.dto';
 import { Book } from '../../../book/models/book.entity';
 import { IBookRepository } from '../../../book/models/book.repository';
 
@@ -11,6 +12,40 @@ export class BookRepository implements IBookRepository {
     @InjectRepository(Book)
     private typeorm: Repository<Book>,
   ) {}
+
+  async updateById(
+    id: string,
+    { genderId, authorId, ...data }: UpdateBookDto,
+  ): Promise<Book> {
+    await this.typeorm.update(
+      {
+        id,
+      },
+      {
+        ...data,
+        ...(genderId && {
+          gender: {
+            id: genderId,
+          },
+        }),
+        ...(authorId && {
+          author: {
+            id: authorId,
+          },
+        }),
+      },
+    );
+
+    return await this.typeorm.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        author: true,
+        gender: true,
+      },
+    });
+  }
 
   async create({ authorId, genderId, ...data }: CreateBookDto): Promise<Book> {
     const book = await this.typeorm.save({
@@ -25,16 +60,33 @@ export class BookRepository implements IBookRepository {
 
     return book;
   }
-  findAll(): Promise<Book[]> {
-    throw new Error('Method not implemented.');
-  }
-  findById(id: string): Promise<Book> {
-    console.log(id);
 
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Book[]> {
+    const books = await this.typeorm.find({
+      relations: {
+        author: true,
+        gender: true,
+      },
+    });
+
+    return books;
   }
-  deleteById(id: string): Promise<void> {
-    console.log(id);
-    throw new Error('Method not implemented.');
+
+  async findById(id: string): Promise<Book> {
+    const book = await this.typeorm.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        author: true,
+        gender: true,
+      },
+    });
+
+    return book;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.typeorm.delete({ id });
   }
 }
