@@ -72,3 +72,8 @@ $ npm run seed
 # Rode a aplicação:
 $ npm run start
 ```
+
+```bash
+import o arquivo requests.json no seu insomnia para ver todos os endpoints disponíveis.
+```
+
