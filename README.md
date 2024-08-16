@@ -2,57 +2,56 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-## Descrição
+# Descrição do Desafio:
 
 Teste para a vaga de estágio Backend na big data health.
 
-Descrição do Desafio:
-
 Você deverá desenvolver uma API para um sistema de gerenciamento de livros. A API deve permitir o cadastro, consulta, atualização e remoção de informações de livros em um banco de dados.
 
-Requisitos Obrigatórios:
-Cadastro de Livros:
+## Requisitos Obrigatórios: :white_check_mark:
+
+### Cadastro de Livros:
 
 Implementar um endpoint para cadastrar um novo livro.
 
 O livro deve conter os campos: id, título, autor, ano de publicação, gênero, quantidade em estoque.
 
-Consulta de Livros:
+### Consulta de Livros:
 
 Implementar um endpoint para consultar todos os livros cadastrados.
 
-Consulta por ID:
+### Consulta por ID:
 
 Implementar um endpoint para consultar um livro específico pelo seu id.
 
-Atualização de Livros:
+### Atualização de Livros:
 
 Implementar um endpoint para atualizar as informações de um livro, como título, autor, ano de publicação, etc.
 
-Remoção de Livros:
+### Remoção de Livros:
 
 Implementar um endpoint para remover um livro do sistema.
 
-Validação de Dados:
+### Validação de Dados:
 
 Implementar validações básicas nos dados de entrada, como verificar se todos os campos obrigatórios estão preenchidos.
 
-Funcionalidades Opcionais:
-Integração com Banco de Dados Relacional:
+## Funcionalidades Opcionais: :white_check_mark:
+### Integração com Banco de Dados Relacional:
 
-Usar um banco de dados relacional (como PostgreSQL ou MySQL) e configurar a conexão com o NestJS.
+: Usar um banco de dados relacional (como PostgreSQL ou MySQL) e configurar a conexão com o NestJS.
 
-Busca Avançada:
+### Busca Avançada:
 
-Implementar filtros de busca por autor, gênero ou ano de publicação.
+ Implementar filtros de busca por autor, gênero ou ano de publicação.
 
-Sistema de Reservas:
+ ### Sistema de Reservas:
 
-Implementar uma funcionalidade que permita aos usuários reservar um livro, diminuindo a quantidade em estoque.
+ Implementar uma funcionalidade que permita aos usuários reservar um livro, diminuindo a quantidade em estoque.
 
-Testes Automatizados:
+ ### Testes Automatizados:
 
-Implementar testes unitários e de integração para validar o funcionamento da API.
+ Implementar testes unitários e de integração para validar o funcionamento da API.
 
 ## Instalação
 
@@ -73,7 +72,7 @@ $ npm run seed
 $ npm run start
 ```
 
-```bash
-import o arquivo requests.json no seu insomnia para ver todos os endpoints disponíveis.
-```
 
+```bash
+import o arquivo requests.json no seu insomnia para ter acesso a todas as requests.
+```
